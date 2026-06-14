@@ -1,107 +1,235 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>AI Resume Builder</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
-body{
-background:radial-gradient(circle at top left,#4f46e5 0%,transparent 40%),radial-gradient(circle at bottom right,#06b6d4 0%,transparent 40%),#0f172a;
-color:#fff;min-height:100vh;padding:30px
-}
-.container{max-width:1400px;margin:auto}
-h1{text-align:center;margin-bottom:20px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-.card{background:rgba(255,255,255,.08);backdrop-filter:blur(12px);padding:20px;border-radius:20px}
-input,textarea{width:100%;padding:12px;margin:8px 0;border:none;border-radius:10px}
-button{padding:14px 20px;background:#6366f1;color:#fff;border:none;border-radius:10px;cursor:pointer}
-button:hover{transform:translateY(-3px)}
-.resume-preview{display:grid;grid-template-columns:250px 1fr;background:#fff;color:#000;border-radius:15px;overflow:hidden}
-.resume-left{padding:25px;border-right:2px solid #222;text-align:center}
-.resume-left img{width:140px;height:140px;border-radius:50%;object-fit:cover}
-.resume-right{padding:30px}
-.resume-title{font-size:38px;font-weight:bold}
-.feature-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin:20px 0}
-.feature-card{padding:20px;border-radius:15px;background:rgba(255,255,255,.08);transition:.5s}
-.feature-card:hover{transform:translateY(-10px) scale(1.04);box-shadow:0 0 25px #6366f1}
-@media(max-width:900px){.grid,.feature-grid,.resume-preview{grid-template-columns:1fr}}
-</style>
-</head>
-<body>
-<div class="container">
-<h1>AI Resume Builder</h1>
+Replace only the form section inside:
 
-<div class="feature-grid">
-<div class="feature-card">Professional Templates</div>
-<div class="feature-card">ATS Friendly</div>
-<div class="feature-card">Portfolio Generator</div>
-<div class="feature-card">PDF Export Ready</div>
-</div>
-
-<div class="grid">
+```html
 <div class="card">
-<input id="fullName" placeholder="Full Name">
-<input id="jobTitle" placeholder="Professional Title">
-<input id="email" placeholder="Email">
-<input id="phone" placeholder="Phone">
-<input id="address" placeholder="Address">
-<input id="linkedin" placeholder="LinkedIn">
-<input id="github" placeholder="GitHub">
-<input id="website" placeholder="Portfolio Website">
-<input id="profileImage" placeholder="Profile Image URL">
-<textarea id="summary" placeholder="Professional Summary"></textarea>
-<textarea id="experience" placeholder="Work Experience"></textarea>
-<textarea id="education" placeholder="Education"></textarea>
-<textarea id="skills" placeholder="Skills"></textarea>
-<textarea id="projects" placeholder="Projects"></textarea>
-<textarea id="certifications" placeholder="Certifications"></textarea>
-<button onclick="generateResume()">Generate Resume</button>
-</div>
+```
 
+with:
+
+```html
 <div class="card">
-<div id="resumePreview">Resume Preview</div>
-</div>
-</div>
-</div>
 
+<form id="resumeForm">
+
+<input
+type="text"
+id="fullName"
+placeholder="Full Name"
+required
+pattern="[A-Za-z ]+"
+title="Only letters allowed">
+
+<input
+type="text"
+id="jobTitle"
+placeholder="Professional Title"
+required>
+
+<input
+type="email"
+id="email"
+placeholder="Email"
+required
+pattern="[a-zA-Z0-9._%+-]+@gmail\.com$"
+title="Enter Gmail only">
+
+<input
+type="tel"
+id="phone"
+placeholder="Phone Number"
+required
+maxlength="10"
+pattern="[0-9]{10}"
+title="Enter exactly 10 digits">
+
+<input
+type="text"
+id="address"
+placeholder="Address"
+required>
+
+<input
+type="url"
+id="linkedin"
+placeholder="LinkedIn URL"
+required>
+
+<input
+type="url"
+id="github"
+placeholder="GitHub URL"
+required>
+
+<input
+type="url"
+id="website"
+placeholder="Portfolio Website"
+required>
+
+<input
+type="file"
+id="profileImage"
+accept="image/png,image/jpeg,image/jpg,image/webp"
+required>
+
+<textarea
+id="summary"
+placeholder="Professional Summary"
+required></textarea>
+
+<textarea
+id="experience"
+placeholder="Work Experience"
+required></textarea>
+
+<textarea
+id="education"
+placeholder="Education"
+required></textarea>
+
+<textarea
+id="skills"
+placeholder="Skills"
+required></textarea>
+
+<textarea
+id="projects"
+placeholder="Projects"
+required></textarea>
+
+<textarea
+id="certifications"
+placeholder="Certifications"
+required></textarea>
+
+<button type="submit">
+Generate Resume
+</button>
+
+</form>
+
+</div>
+```
+
+Then replace your entire `<script>` block with:
+
+```html
 <script>
+
+let uploadedImage="";
+
+document.getElementById("profileImage").addEventListener("change",function(e){
+
+const file=e.target.files[0];
+
+if(!file)return;
+
+if(!file.type.startsWith("image/")){
+alert("Only image files allowed");
+this.value="";
+return;
+}
+
+const reader=new FileReader();
+
+reader.onload=function(event){
+uploadedImage=event.target.result;
+};
+
+reader.readAsDataURL(file);
+
+});
+
+document.getElementById("fullName").addEventListener("input",function(){
+
+this.value=this.value.replace(/[^A-Za-z ]/g,'');
+
+});
+
+document.getElementById("phone").addEventListener("input",function(){
+
+this.value=this.value.replace(/\D/g,'');
+
+if(this.value.length>10){
+this.value=this.value.slice(0,10);
+}
+
+});
+
+document.getElementById("resumeForm").addEventListener("submit",function(e){
+
+e.preventDefault();
+
+if(!this.checkValidity()){
+this.reportValidity();
+return;
+}
+
+generateResume();
+
+});
+
 function generateResume(){
+
 let v=id=>document.getElementById(id).value;
 
 document.getElementById("resumePreview").innerHTML=`
+
 <div class="resume-preview">
+
 <div class="resume-left">
-<img src="${v('profileImage')||'https://via.placeholder.com/150'}">
+
+<img src="${uploadedImage}">
+
 <h3 style="margin-top:15px">PROFILE</h3>
+
 <p>${v('summary')}</p>
+
 <h3 style="margin-top:20px">SKILLS</h3>
+
 <p>${v('skills').replace(/\n/g,'<br>')}</p>
+
 </div>
 
 <div class="resume-right">
+
 <div class="resume-title">${v('fullName')}</div>
+
 <p><b>${v('jobTitle')}</b></p>
+
 <p>${v('email')} | ${v('phone')}</p>
+
 <p>${v('address')}</p>
+
 <p>${v('linkedin')}</p>
+
 <p>${v('github')}</p>
+
 <p>${v('website')}</p>
 
 <h2 style="margin-top:25px">WORK EXPERIENCE</h2>
+
 <p>${v('experience').replace(/\n/g,'<br>')}</p>
 
 <h2 style="margin-top:25px">EDUCATION</h2>
+
 <p>${v('education').replace(/\n/g,'<br>')}</p>
 
 <h2 style="margin-top:25px">PROJECTS</h2>
+
 <p>${v('projects').replace(/\n/g,'<br>')}</p>
 
 <h2 style="margin-top:25px">CERTIFICATIONS</h2>
+
 <p>${v('certifications').replace(/\n/g,'<br>')}</p>
+
 </div>
-</div>`;
+
+</div>
+
+`;
+
 }
+
 </script>
-</body>
-</html>
+```
