@@ -4,7 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>AI Resume Builder</title>
+<title>Professional Resume Builder</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Merriweather:wght@700&display=swap" rel="stylesheet">
 
 <style>
 
@@ -12,22 +14,15 @@
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:Arial,sans-serif;
+font-family:'Poppins',sans-serif;
 }
 
 body{
-background:linear-gradient(
-135deg,
-#0f172a,
-#1e293b,
-#312e81,
-#4f46e5
-);
+background:linear-gradient(135deg,#0f172a,#312e81,#4f46e5);
 background-size:400% 400%;
-animation:bgMove 10s ease infinite;
-color:white;
-min-height:100vh;
+animation:bgMove 10s infinite;
 padding:30px;
+color:white;
 }
 
 @keyframes bgMove{
@@ -41,64 +36,21 @@ max-width:1400px;
 margin:auto;
 }
 
-h1{
+h1.page-title{
 text-align:center;
 margin-bottom:25px;
-}
-
-.feature-grid{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:15px;
-margin-bottom:25px;
-}
-
-.feature-card{
-padding:20px;
-border-radius:15px;
-background:rgba(255,255,255,.08);
-backdrop-filter:blur(10px);
-text-align:center;
-position:relative;
-overflow:hidden;
-transition:all .5s ease;
-cursor:pointer;
-}
-
-.feature-card::before{
-content:"";
-position:absolute;
-top:0;
-left:-100%;
-width:100%;
-height:100%;
-background:linear-gradient(
-90deg,
-transparent,
-rgba(255,255,255,.25),
-transparent
-);
-transition:.7s;
-}
-
-.feature-card:hover::before{
-left:100%;
-}
-
-.feature-card:hover{
-transform:translateY(-10px) scale(1.05);
-box-shadow:0 0 25px #8b5cf6;
+font-size:40px;
 }
 
 .grid{
 display:grid;
-grid-template-columns:1fr 1fr;
-gap:20px;
+grid-template-columns:420px 1fr;
+gap:25px;
 }
 
 .card{
 background:rgba(255,255,255,.08);
-backdrop-filter:blur(12px);
+backdrop-filter:blur(10px);
 padding:20px;
 border-radius:20px;
 }
@@ -110,77 +62,122 @@ padding:12px;
 margin:8px 0;
 border:none;
 border-radius:10px;
-outline:none;
+font-size:14px;
 }
 
 textarea{
-min-height:100px;
+min-height:90px;
 resize:vertical;
 }
 
 button{
 width:100%;
 padding:15px;
-background:#6366f1;
 border:none;
-color:white;
 border-radius:10px;
-cursor:pointer;
+background:#6366f1;
+color:white;
 font-size:16px;
-font-weight:bold;
+cursor:pointer;
 transition:.3s;
 }
 
 button:hover{
 transform:translateY(-3px);
-background:#4f46e5;
 }
 
-.resume-preview{
-display:grid;
-grid-template-columns:280px 1fr;
-background:white;
-color:black;
+.resume{
+background:#e8dcc9;
+color:#222;
+padding:40px;
 border-radius:15px;
-overflow:hidden;
+min-height:1000px;
 }
 
-.resume-left{
-padding:25px;
-background:#f3f4f6;
-text-align:center;
+.header{
+display:flex;
+align-items:center;
+gap:20px;
+margin-bottom:40px;
 }
 
-.resume-left img{
-width:150px;
-height:150px;
+.header img{
+width:120px;
+height:120px;
 border-radius:50%;
 object-fit:cover;
-margin-bottom:15px;
+border:3px solid #fff;
 }
 
-.resume-left h3{
-margin:15px 0 10px;
+.name{
+font-family:'Merriweather',serif;
+font-size:48px;
+font-weight:700;
+color:#0b8b8b;
 }
 
-.resume-right{
-padding:30px;
+.details{
+font-size:14px;
+margin-top:10px;
+line-height:1.8;
 }
 
-.resume-right h1{
-text-align:left;
-margin-bottom:5px;
+.section{
+position:relative;
+padding-left:45px;
+margin-top:50px;
 }
 
-.resume-right h2{
-margin-top:20px;
-border-bottom:2px solid #ddd;
-padding-bottom:5px;
+.section::before{
+content:'';
+position:absolute;
+left:12px;
+top:30px;
+width:2px;
+height:100%;
+background:#444;
 }
 
-.resume-right p{
-margin-top:8px;
-line-height:1.6;
+.icon{
+position:absolute;
+left:0;
+top:0;
+width:25px;
+height:25px;
+background:black;
+border-radius:50%;
+}
+
+.title{
+font-size:28px;
+font-weight:700;
+color:#0b8b8b;
+margin-bottom:40px;
+}
+
+.content{
+line-height:1.9;
+font-size:15px;
+}
+
+.skill{
+margin-bottom:25px;
+}
+
+.skill-row{
+display:flex;
+justify-content:space-between;
+margin-bottom:8px;
+}
+
+.bar{
+height:7px;
+background:#111;
+}
+
+.fill{
+height:100%;
+background:#0b8b8b;
 }
 
 @media(max-width:900px){
@@ -189,36 +186,24 @@ line-height:1.6;
 grid-template-columns:1fr;
 }
 
-.feature-grid{
-grid-template-columns:1fr 1fr;
+.header{
+flex-direction:column;
+text-align:center;
 }
 
-.resume-preview{
-grid-template-columns:1fr;
+.name{
+font-size:36px;
 }
 
 }
 
 </style>
 </head>
-
 <body>
 
 <div class="container">
 
-<h1>AI Resume Builder</h1>
-
-<div class="feature-grid">
-
-<div class="feature-card">Professional Templates</div>
-
-<div class="feature-card">ATS Friendly</div>
-
-<div class="feature-card">Portfolio Generator</div>
-
-<div class="feature-card">PDF Export Ready</div>
-
-</div>
+<h1 class="page-title">Professional Resume Builder</h1>
 
 <div class="grid">
 
@@ -226,117 +211,76 @@ grid-template-columns:1fr;
 
 <form id="resumeForm">
 
-<input
-type="text"
+<input type="text"
 id="fullName"
 placeholder="Full Name"
 required
-pattern="[A-Za-z ]+"
-title="Only letters allowed">
+pattern="[A-Za-z ]+">
 
-<input
-type="text"
+<input type="text"
 id="jobTitle"
 placeholder="Professional Title"
 required>
 
-<input
-type="email"
+<input type="email"
 id="email"
-placeholder="Gmail Address"
+placeholder="Gmail"
 required
-pattern="[a-zA-Z0-9._%+-]+@gmail\.com$"
-title="Enter Gmail only">
+pattern="[a-zA-Z0-9._%+-]+@gmail\.com$">
 
-<input
-type="tel"
+<input type="tel"
 id="phone"
-placeholder="Phone Number"
+placeholder="10 Digit Mobile Number"
 required
 maxlength="10"
-pattern="[0-9]{10}"
-title="Enter exactly 10 digits">
+pattern="[0-9]{10}">
 
-<input
-type="text"
+<input type="text"
 id="address"
 placeholder="Address"
 required>
 
-<input
-type="url"
+<input type="url"
 id="linkedin"
 placeholder="LinkedIn URL"
 required>
 
-<input
-type="url"
+<input type="url"
 id="github"
 placeholder="GitHub URL"
 required>
 
-<input
-type="url"
-id="website"
-placeholder="Portfolio Website"
-required>
-
-<label>Profile Photo</label>
-
-<input
-type="file"
+<input type="file"
 id="profileImage"
-accept="image/png,image/jpeg,image/jpg,image/webp"
+accept="image/*"
 required>
 
-<textarea
-id="summary"
-placeholder="Professional Summary"
-required></textarea>
-
-<textarea
-id="objective"
+<textarea id="objective"
 placeholder="Career Objective"
 required></textarea>
 
-<textarea
-id="experience"
+<textarea id="experience"
 placeholder="Work Experience"
 required></textarea>
 
-<textarea
-id="education"
+<textarea id="skills"
+placeholder="Skills (Example: Communication:85)"
+required></textarea>
+
+<textarea id="education"
 placeholder="Education"
 required></textarea>
 
-<textarea
-id="skills"
-placeholder="Skills"
-required></textarea>
-
-<textarea
-id="projects"
+<textarea id="projects"
 placeholder="Projects"
 required></textarea>
 
-<textarea
-id="certifications"
+<textarea id="certifications"
 placeholder="Certifications"
 required></textarea>
 
-<textarea
-id="achievements"
+<textarea id="achievements"
 placeholder="Achievements"
-required></textarea>
-
-<textarea
-id="languages"
-placeholder="Languages Known"
-required></textarea>
-
-<textarea
-id="interests"
-placeholder="Interests / Hobbies"
 required></textarea>
 
 <button type="submit">
@@ -373,24 +317,17 @@ document
 
 const file=e.target.files[0];
 
-if(!file) return;
+if(!file)return;
 
 if(!file.type.startsWith("image/")){
-
 alert("Only image files allowed");
-
-this.value="";
-
 return;
-
 }
 
 const reader=new FileReader();
 
 reader.onload=function(event){
-
 uploadedImage=event.target.result;
-
 };
 
 reader.readAsDataURL(file);
@@ -412,9 +349,7 @@ document
 this.value=this.value.replace(/\D/g,'');
 
 if(this.value.length>10){
-
 this.value=this.value.slice(0,10);
-
 }
 
 });
@@ -426,16 +361,53 @@ document
 e.preventDefault();
 
 if(!this.checkValidity()){
-
 this.reportValidity();
-
 return;
-
 }
 
 generateResume();
 
 });
+
+function buildSkills(skillsText){
+
+const lines=skillsText.split('\n');
+
+let html='';
+
+lines.forEach(line=>{
+
+const parts=line.split(':');
+
+if(parts.length===2){
+
+const skill=parts[0];
+const percent=parts[1];
+
+html+=`
+
+<div class="skill">
+
+<div class="skill-row">
+<span>${skill}</span>
+<span>${percent}%</span>
+</div>
+
+<div class="bar">
+<div class="fill" style="width:${percent}%"></div>
+</div>
+
+</div>
+
+`;
+
+}
+
+});
+
+return html;
+
+}
 
 function generateResume(){
 
@@ -443,71 +415,131 @@ const v=id=>document.getElementById(id).value;
 
 document.getElementById("resumePreview").innerHTML=`
 
-<div class="resume-preview">
+<div class="resume">
 
-<div class="resume-left">
+<div class="header">
 
 <img src="${uploadedImage}">
 
-<h3>PROFILE</h3>
+<div>
 
-<p>${v("summary")}</p>
+<div class="name">${v('fullName')}</div>
 
-<h3>SKILLS</h3>
+<div class="details">
 
-<p>${v("skills").replace(/\n/g,"<br>")}</p>
+<b>${v('jobTitle')}</b><br>
 
-<h3>LANGUAGES</h3>
+Email: ${v('email')}<br>
 
-<p>${v("languages").replace(/\n/g,"<br>")}</p>
+Phone: ${v('phone')}<br>
+
+Address: ${v('address')}<br>
+
+LinkedIn: ${v('linkedin')}<br>
+
+GitHub: ${v('github')}
 
 </div>
 
-<div class="resume-right">
+</div>
 
-<h1>${v("fullName")}</h1>
+</div>
 
-<h3>${v("jobTitle")}</h3>
+<div class="section">
 
-<p><strong>Email:</strong> ${v("email")}</p>
+<div class="icon"></div>
 
-<p><strong>Phone:</strong> ${v("phone")}</p>
+<div class="title">Career Objective</div>
 
-<p><strong>Address:</strong> ${v("address")}</p>
+<div class="content">
 
-<p><strong>LinkedIn:</strong> ${v("linkedin")}</p>
+${v('objective').replace(/\n/g,'<br>')}
 
-<p><strong>GitHub:</strong> ${v("github")}</p>
+</div>
 
-<p><strong>Website:</strong> ${v("website")}</p>
+</div>
 
-<h2>CAREER OBJECTIVE</h2>
+<div class="section">
 
-<p>${v("objective")}</p>
+<div class="icon"></div>
 
-<h2>WORK EXPERIENCE</h2>
+<div class="title">Work Experience</div>
 
-<p>${v("experience").replace(/\n/g,"<br>")}</p>
+<div class="content">
 
-<h2>EDUCATION</h2>
+${v('experience').replace(/\n/g,'<br>')}
 
-<p>${v("education").replace(/\n/g,"<br>")}</p>
+</div>
 
-<h2>PROJECTS</h2>
+</div>
 
-<p>${v("projects").replace(/\n/g,"<br>")}</p>
+<div class="section">
 
-<h2>CERTIFICATIONS</h2>
+<div class="icon"></div>
 
-<p>${v("certifications").replace(/\n/g,"<br>")}</p>
+<div class="title">Core Strengths</div>
 
-<h2>ACHIEVEMENTS</h2>
+<div class="content">
 
-<p>${v("achievements").replace(/\n/g,"<br>")}</p>
+${buildSkills(v('skills'))}
 
-<h2>HOBBIES & INTERESTS</h2>
+</div>
 
-<p>${v("interests").replace(/\n/g,"<br>")}</p>
+</div>
+
+<div class="section">
+
+<div class="icon"></div>
+
+<div class="title">Education</div>
+
+<div class="content">
+
+${v('education').replace(/\n/g,'<br>')}
+
+</div>
+
+</div>
+
+<div class="section">
+
+<div class="icon"></div>
+
+<div class="title">Projects</div>
+
+<div class="content">
+
+${v('projects').replace(/\n/g,'<br>')}
+
+</div>
+
+</div>
+
+<div class="section">
+
+<div class="icon"></div>
+
+<div class="title">Certifications</div>
+
+<div class="content">
+
+${v('certifications').replace(/\n/g,'<br>')}
+
+</div>
+
+</div>
+
+<div class="section">
+
+<div class="icon"></div>
+
+<div class="title">Achievements</div>
+
+<div class="content">
+
+${v('achievements').replace(/\n/g,'<br>')}
+
+</div>
 
 </div>
 
