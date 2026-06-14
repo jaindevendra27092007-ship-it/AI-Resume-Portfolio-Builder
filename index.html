@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>CareerAI - Single File Demo</title>
+
+<style>
+
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+
+body{background:linear-gradient(135deg,#0f172a,#1e1b4b);color:#fff}
+
+nav{position:sticky;top:0;display:flex;justify-content:space-between;padding:15px 30px;background:rgba(255,255,255,.08);backdrop-filter:blur(10px)}
+
+.hero{padding:80px 20px;text-align:center}
+
+.hero h1{font-size:3rem}
+
+.hero span{color:#60a5fa}
+
+.btn{padding:12px 20px;border:none;border-radius:10px;background:#3b82f6;color:white;cursor:pointer}
+
+.section{padding:50px 20px;max-width:1200px;margin:auto}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px}
+
+.card{background:rgba(255,255,255,.08);padding:20px;border-radius:16px;backdrop-filter:blur(10px)}
+
+input,textarea,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:none}
+
+.preview{min-height:200px;white-space:pre-wrap}
+
+footer{text-align:center;padding:30px}
+
+</style>
+
+</head>
+
+<body>
+
+<nav><h2>CareerAI</h2><button class="btn" onclick="toggleTheme()">Theme</button></nav>
+
+
+
+<section class="hero">
+
+<h1>Build Your Dream Career <span>With AI</span></h1>
+
+<p>Resume, Portfolio, Cover Letters & Interview Prep</p><br>
+
+<a href="#resume"><button class="btn">Get Started</button></a>
+
+</section>
+
+
+
+<section class="section">
+
+<h2>Features</h2><br>
+
+<div class="grid">
+
+<div class="card">AI Resume Generator</div>
+
+<div class="card">Portfolio Builder</div>
+
+<div class="card">Cover Letter Generator</div>
+
+<div class="card">Interview Preparation</div>
+
+</div>
+
+</section>
+
+
+
+<section class="section" id="resume">
+
+<h2>Resume Builder</h2><br>
+
+<div class="grid">
+
+<div class="card">
+
+<input id="name" placeholder="Full Name">
+
+<input id="email" placeholder="Email">
+
+<textarea id="skills" placeholder="Skills"></textarea>
+
+<button class="btn" onclick="genResume()">Generate Resume</button>
+
+</div>
+
+<div class="card preview" id="resumeOut">Resume preview...</div>
+
+</div>
+
+</section>
+
+
+
+<section class="section">
+
+<h2>Portfolio Builder</h2><br>
+
+<div class="grid">
+
+<div class="card">
+
+<input id="pname" placeholder="Name">
+
+<textarea id="pbio" placeholder="Bio"></textarea>
+
+<button class="btn" onclick="genPortfolio()">Generate Portfolio</button>
+
+</div>
+
+<div class="card preview" id="portfolioOut">Portfolio preview...</div>
+
+</div>
+
+</section>
+
+
+
+<section class="section">
+
+<h2>Cover Letter Generator</h2><br>
+
+<div class="card">
+
+<input id="role" placeholder="Job Role">
+
+<input id="company" placeholder="Company">
+
+<button class="btn" onclick="genCover()">Generate</button>
+
+<div class="preview" id="coverOut"></div>
+
+</div>
+
+</section>
+
+
+
+<section class="section">
+
+<h2>Interview Questions</h2><br>
+
+<div class="card">
+
+<input id="job" placeholder="Job Title">
+
+<button class="btn" onclick="genInterview()">Generate</button>
+
+<div class="preview" id="interviewOut"></div>
+
+</div>
+
+</section>
+
+
+
+<footer>© 2026 CareerAI</footer>
+
+
+
+<script>
+
+function genResume(){
+
+resumeOut.textContent=`${name.value}\n${email.value}\n\nSkills:\n${skills.value}`;
+
+}
+
+function genPortfolio(){
+
+portfolioOut.textContent=`${pname.value}\n\n${pbio.value}`;
+
+}
+
+function genCover(){
+
+coverOut.textContent=`Dear Hiring Manager,\nI am applying for the ${role.value} position at ${company.value}.`;
+
+}
+
+function genInterview(){
+
+interviewOut.textContent=`1. Tell me about yourself.\n2. Why do you want this ${job.value} role?\n3. What are your strengths?`;
+
+}
+
+function toggleTheme(){
+
+document.body.style.filter=document.body.style.filter?"":"invert(1) hue-rotate(180deg)";
+
+}
+
+</script>
+
+</body>
+
+</html>
