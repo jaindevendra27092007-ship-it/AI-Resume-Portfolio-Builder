@@ -1,12 +1,227 @@
-Replace only the form section inside:
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-```html
-<div class="card">
-```
+<title>AI Resume Builder</title>
 
-with:
+<style>
 
-```html
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:linear-gradient(
+135deg,
+#0f172a,
+#1e293b,
+#312e81,
+#4f46e5
+);
+background-size:400% 400%;
+animation:bgMove 10s ease infinite;
+color:white;
+min-height:100vh;
+padding:30px;
+}
+
+@keyframes bgMove{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
+}
+
+.container{
+max-width:1400px;
+margin:auto;
+}
+
+h1{
+text-align:center;
+margin-bottom:25px;
+}
+
+.feature-grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:15px;
+margin-bottom:25px;
+}
+
+.feature-card{
+padding:20px;
+border-radius:15px;
+background:rgba(255,255,255,.08);
+backdrop-filter:blur(10px);
+text-align:center;
+position:relative;
+overflow:hidden;
+transition:all .5s ease;
+cursor:pointer;
+}
+
+.feature-card::before{
+content:"";
+position:absolute;
+top:0;
+left:-100%;
+width:100%;
+height:100%;
+background:linear-gradient(
+90deg,
+transparent,
+rgba(255,255,255,.25),
+transparent
+);
+transition:.7s;
+}
+
+.feature-card:hover::before{
+left:100%;
+}
+
+.feature-card:hover{
+transform:translateY(-10px) scale(1.05);
+box-shadow:0 0 25px #8b5cf6;
+}
+
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
+}
+
+.card{
+background:rgba(255,255,255,.08);
+backdrop-filter:blur(12px);
+padding:20px;
+border-radius:20px;
+}
+
+input,
+textarea{
+width:100%;
+padding:12px;
+margin:8px 0;
+border:none;
+border-radius:10px;
+outline:none;
+}
+
+textarea{
+min-height:100px;
+resize:vertical;
+}
+
+button{
+width:100%;
+padding:15px;
+background:#6366f1;
+border:none;
+color:white;
+border-radius:10px;
+cursor:pointer;
+font-size:16px;
+font-weight:bold;
+transition:.3s;
+}
+
+button:hover{
+transform:translateY(-3px);
+background:#4f46e5;
+}
+
+.resume-preview{
+display:grid;
+grid-template-columns:280px 1fr;
+background:white;
+color:black;
+border-radius:15px;
+overflow:hidden;
+}
+
+.resume-left{
+padding:25px;
+background:#f3f4f6;
+text-align:center;
+}
+
+.resume-left img{
+width:150px;
+height:150px;
+border-radius:50%;
+object-fit:cover;
+margin-bottom:15px;
+}
+
+.resume-left h3{
+margin:15px 0 10px;
+}
+
+.resume-right{
+padding:30px;
+}
+
+.resume-right h1{
+text-align:left;
+margin-bottom:5px;
+}
+
+.resume-right h2{
+margin-top:20px;
+border-bottom:2px solid #ddd;
+padding-bottom:5px;
+}
+
+.resume-right p{
+margin-top:8px;
+line-height:1.6;
+}
+
+@media(max-width:900px){
+
+.grid{
+grid-template-columns:1fr;
+}
+
+.feature-grid{
+grid-template-columns:1fr 1fr;
+}
+
+.resume-preview{
+grid-template-columns:1fr;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>AI Resume Builder</h1>
+
+<div class="feature-grid">
+
+<div class="feature-card">Professional Templates</div>
+
+<div class="feature-card">ATS Friendly</div>
+
+<div class="feature-card">Portfolio Generator</div>
+
+<div class="feature-card">PDF Export Ready</div>
+
+</div>
+
+<div class="grid">
+
 <div class="card">
 
 <form id="resumeForm">
@@ -28,7 +243,7 @@ required>
 <input
 type="email"
 id="email"
-placeholder="Email"
+placeholder="Gmail Address"
 required
 pattern="[a-zA-Z0-9._%+-]+@gmail\.com$"
 title="Enter Gmail only">
@@ -66,6 +281,8 @@ id="website"
 placeholder="Portfolio Website"
 required>
 
+<label>Profile Photo</label>
+
 <input
 type="file"
 id="profileImage"
@@ -75,6 +292,11 @@ required>
 <textarea
 id="summary"
 placeholder="Professional Summary"
+required></textarea>
+
+<textarea
+id="objective"
+placeholder="Career Objective"
 required></textarea>
 
 <textarea
@@ -102,6 +324,21 @@ id="certifications"
 placeholder="Certifications"
 required></textarea>
 
+<textarea
+id="achievements"
+placeholder="Achievements"
+required></textarea>
+
+<textarea
+id="languages"
+placeholder="Languages Known"
+required></textarea>
+
+<textarea
+id="interests"
+placeholder="Interests / Hobbies"
+required></textarea>
+
 <button type="submit">
 Generate Resume
 </button>
@@ -109,60 +346,91 @@ Generate Resume
 </form>
 
 </div>
-```
 
-Then replace your entire `<script>` block with:
+<div class="card">
 
-```html
+<div id="resumePreview">
+
+<h2 style="text-align:center;">
+Resume Preview
+</h2>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
 <script>
 
 let uploadedImage="";
 
-document.getElementById("profileImage").addEventListener("change",function(e){
+document
+.getElementById("profileImage")
+.addEventListener("change",function(e){
 
 const file=e.target.files[0];
 
-if(!file)return;
+if(!file) return;
 
 if(!file.type.startsWith("image/")){
+
 alert("Only image files allowed");
+
 this.value="";
+
 return;
+
 }
 
 const reader=new FileReader();
 
 reader.onload=function(event){
+
 uploadedImage=event.target.result;
+
 };
 
 reader.readAsDataURL(file);
 
 });
 
-document.getElementById("fullName").addEventListener("input",function(){
+document
+.getElementById("fullName")
+.addEventListener("input",function(){
 
 this.value=this.value.replace(/[^A-Za-z ]/g,'');
 
 });
 
-document.getElementById("phone").addEventListener("input",function(){
+document
+.getElementById("phone")
+.addEventListener("input",function(){
 
 this.value=this.value.replace(/\D/g,'');
 
 if(this.value.length>10){
+
 this.value=this.value.slice(0,10);
+
 }
 
 });
 
-document.getElementById("resumeForm").addEventListener("submit",function(e){
+document
+.getElementById("resumeForm")
+.addEventListener("submit",function(e){
 
 e.preventDefault();
 
 if(!this.checkValidity()){
+
 this.reportValidity();
+
 return;
+
 }
 
 generateResume();
@@ -171,7 +439,7 @@ generateResume();
 
 function generateResume(){
 
-let v=id=>document.getElementById(id).value;
+const v=id=>document.getElementById(id).value;
 
 document.getElementById("resumePreview").innerHTML=`
 
@@ -181,47 +449,65 @@ document.getElementById("resumePreview").innerHTML=`
 
 <img src="${uploadedImage}">
 
-<h3 style="margin-top:15px">PROFILE</h3>
+<h3>PROFILE</h3>
 
-<p>${v('summary')}</p>
+<p>${v("summary")}</p>
 
-<h3 style="margin-top:20px">SKILLS</h3>
+<h3>SKILLS</h3>
 
-<p>${v('skills').replace(/\n/g,'<br>')}</p>
+<p>${v("skills").replace(/\n/g,"<br>")}</p>
+
+<h3>LANGUAGES</h3>
+
+<p>${v("languages").replace(/\n/g,"<br>")}</p>
 
 </div>
 
 <div class="resume-right">
 
-<div class="resume-title">${v('fullName')}</div>
+<h1>${v("fullName")}</h1>
 
-<p><b>${v('jobTitle')}</b></p>
+<h3>${v("jobTitle")}</h3>
 
-<p>${v('email')} | ${v('phone')}</p>
+<p><strong>Email:</strong> ${v("email")}</p>
 
-<p>${v('address')}</p>
+<p><strong>Phone:</strong> ${v("phone")}</p>
 
-<p>${v('linkedin')}</p>
+<p><strong>Address:</strong> ${v("address")}</p>
 
-<p>${v('github')}</p>
+<p><strong>LinkedIn:</strong> ${v("linkedin")}</p>
 
-<p>${v('website')}</p>
+<p><strong>GitHub:</strong> ${v("github")}</p>
 
-<h2 style="margin-top:25px">WORK EXPERIENCE</h2>
+<p><strong>Website:</strong> ${v("website")}</p>
 
-<p>${v('experience').replace(/\n/g,'<br>')}</p>
+<h2>CAREER OBJECTIVE</h2>
 
-<h2 style="margin-top:25px">EDUCATION</h2>
+<p>${v("objective")}</p>
 
-<p>${v('education').replace(/\n/g,'<br>')}</p>
+<h2>WORK EXPERIENCE</h2>
 
-<h2 style="margin-top:25px">PROJECTS</h2>
+<p>${v("experience").replace(/\n/g,"<br>")}</p>
 
-<p>${v('projects').replace(/\n/g,'<br>')}</p>
+<h2>EDUCATION</h2>
 
-<h2 style="margin-top:25px">CERTIFICATIONS</h2>
+<p>${v("education").replace(/\n/g,"<br>")}</p>
 
-<p>${v('certifications').replace(/\n/g,'<br>')}</p>
+<h2>PROJECTS</h2>
+
+<p>${v("projects").replace(/\n/g,"<br>")}</p>
+
+<h2>CERTIFICATIONS</h2>
+
+<p>${v("certifications").replace(/\n/g,"<br>")}</p>
+
+<h2>ACHIEVEMENTS</h2>
+
+<p>${v("achievements").replace(/\n/g,"<br>")}</p>
+
+<h2>HOBBIES & INTERESTS</h2>
+
+<p>${v("interests").replace(/\n/g,"<br>")}</p>
 
 </div>
 
@@ -232,4 +518,6 @@ document.getElementById("resumePreview").innerHTML=`
 }
 
 </script>
-```
+
+</body>
+</html>
