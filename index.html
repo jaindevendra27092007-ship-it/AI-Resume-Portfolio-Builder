@@ -1,211 +1,107 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>CareerAI - Single File Demo</title>
-
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>AI Resume Builder</title>
 <style>
-
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
-
-body{background:linear-gradient(135deg,#0f172a,#1e1b4b);color:#fff}
-
-nav{position:sticky;top:0;display:flex;justify-content:space-between;padding:15px 30px;background:rgba(255,255,255,.08);backdrop-filter:blur(10px)}
-
-.hero{padding:80px 20px;text-align:center}
-
-.hero h1{font-size:3rem}
-
-.hero span{color:#60a5fa}
-
-.btn{padding:12px 20px;border:none;border-radius:10px;background:#3b82f6;color:white;cursor:pointer}
-
-.section{padding:50px 20px;max-width:1200px;margin:auto}
-
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px}
-
-.card{background:rgba(255,255,255,.08);padding:20px;border-radius:16px;backdrop-filter:blur(10px)}
-
-input,textarea,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:none}
-
-.preview{min-height:200px;white-space:pre-wrap}
-
-footer{text-align:center;padding:30px}
-
+body{
+background:radial-gradient(circle at top left,#4f46e5 0%,transparent 40%),radial-gradient(circle at bottom right,#06b6d4 0%,transparent 40%),#0f172a;
+color:#fff;min-height:100vh;padding:30px
+}
+.container{max-width:1400px;margin:auto}
+h1{text-align:center;margin-bottom:20px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.card{background:rgba(255,255,255,.08);backdrop-filter:blur(12px);padding:20px;border-radius:20px}
+input,textarea{width:100%;padding:12px;margin:8px 0;border:none;border-radius:10px}
+button{padding:14px 20px;background:#6366f1;color:#fff;border:none;border-radius:10px;cursor:pointer}
+button:hover{transform:translateY(-3px)}
+.resume-preview{display:grid;grid-template-columns:250px 1fr;background:#fff;color:#000;border-radius:15px;overflow:hidden}
+.resume-left{padding:25px;border-right:2px solid #222;text-align:center}
+.resume-left img{width:140px;height:140px;border-radius:50%;object-fit:cover}
+.resume-right{padding:30px}
+.resume-title{font-size:38px;font-weight:bold}
+.feature-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin:20px 0}
+.feature-card{padding:20px;border-radius:15px;background:rgba(255,255,255,.08);transition:.5s}
+.feature-card:hover{transform:translateY(-10px) scale(1.04);box-shadow:0 0 25px #6366f1}
+@media(max-width:900px){.grid,.feature-grid,.resume-preview{grid-template-columns:1fr}}
 </style>
-
 </head>
-
 <body>
+<div class="container">
+<h1>AI Resume Builder</h1>
 
-<nav><h2>CareerAI</h2><button class="btn" onclick="toggleTheme()">Theme</button></nav>
-
-
-
-<section class="hero">
-
-<h1>Build Your Dream Career <span>With AI</span></h1>
-
-<p>Resume, Portfolio, Cover Letters & Interview Prep</p><br>
-
-<a href="#resume"><button class="btn">Get Started</button></a>
-
-</section>
-
-
-
-<section class="section">
-
-<h2>Features</h2><br>
-
-<div class="grid">
-
-<div class="card">AI Resume Generator</div>
-
-<div class="card">Portfolio Builder</div>
-
-<div class="card">Cover Letter Generator</div>
-
-<div class="card">Interview Preparation</div>
-
+<div class="feature-grid">
+<div class="feature-card">Professional Templates</div>
+<div class="feature-card">ATS Friendly</div>
+<div class="feature-card">Portfolio Generator</div>
+<div class="feature-card">PDF Export Ready</div>
 </div>
 
-</section>
-
-
-
-<section class="section" id="resume">
-
-<h2>Resume Builder</h2><br>
-
 <div class="grid">
-
 <div class="card">
-
-<input id="name" placeholder="Full Name">
-
+<input id="fullName" placeholder="Full Name">
+<input id="jobTitle" placeholder="Professional Title">
 <input id="email" placeholder="Email">
-
+<input id="phone" placeholder="Phone">
+<input id="address" placeholder="Address">
+<input id="linkedin" placeholder="LinkedIn">
+<input id="github" placeholder="GitHub">
+<input id="website" placeholder="Portfolio Website">
+<input id="profileImage" placeholder="Profile Image URL">
+<textarea id="summary" placeholder="Professional Summary"></textarea>
+<textarea id="experience" placeholder="Work Experience"></textarea>
+<textarea id="education" placeholder="Education"></textarea>
 <textarea id="skills" placeholder="Skills"></textarea>
-
-<button class="btn" onclick="genResume()">Generate Resume</button>
-
+<textarea id="projects" placeholder="Projects"></textarea>
+<textarea id="certifications" placeholder="Certifications"></textarea>
+<button onclick="generateResume()">Generate Resume</button>
 </div>
-
-<div class="card preview" id="resumeOut">Resume preview...</div>
-
-</div>
-
-</section>
-
-
-
-<section class="section">
-
-<h2>Portfolio Builder</h2><br>
-
-<div class="grid">
 
 <div class="card">
-
-<input id="pname" placeholder="Name">
-
-<textarea id="pbio" placeholder="Bio"></textarea>
-
-<button class="btn" onclick="genPortfolio()">Generate Portfolio</button>
-
+<div id="resumePreview">Resume Preview</div>
 </div>
-
-<div class="card preview" id="portfolioOut">Portfolio preview...</div>
-
 </div>
-
-</section>
-
-
-
-<section class="section">
-
-<h2>Cover Letter Generator</h2><br>
-
-<div class="card">
-
-<input id="role" placeholder="Job Role">
-
-<input id="company" placeholder="Company">
-
-<button class="btn" onclick="genCover()">Generate</button>
-
-<div class="preview" id="coverOut"></div>
-
 </div>
-
-</section>
-
-
-
-<section class="section">
-
-<h2>Interview Questions</h2><br>
-
-<div class="card">
-
-<input id="job" placeholder="Job Title">
-
-<button class="btn" onclick="genInterview()">Generate</button>
-
-<div class="preview" id="interviewOut"></div>
-
-</div>
-
-</section>
-
-
-
-<footer>© 2026 CareerAI</footer>
-
-
 
 <script>
+function generateResume(){
+let v=id=>document.getElementById(id).value;
 
-function genResume(){
+document.getElementById("resumePreview").innerHTML=`
+<div class="resume-preview">
+<div class="resume-left">
+<img src="${v('profileImage')||'https://via.placeholder.com/150'}">
+<h3 style="margin-top:15px">PROFILE</h3>
+<p>${v('summary')}</p>
+<h3 style="margin-top:20px">SKILLS</h3>
+<p>${v('skills').replace(/\n/g,'<br>')}</p>
+</div>
 
-resumeOut.textContent=`${name.value}\n${email.value}\n\nSkills:\n${skills.value}`;
+<div class="resume-right">
+<div class="resume-title">${v('fullName')}</div>
+<p><b>${v('jobTitle')}</b></p>
+<p>${v('email')} | ${v('phone')}</p>
+<p>${v('address')}</p>
+<p>${v('linkedin')}</p>
+<p>${v('github')}</p>
+<p>${v('website')}</p>
 
+<h2 style="margin-top:25px">WORK EXPERIENCE</h2>
+<p>${v('experience').replace(/\n/g,'<br>')}</p>
+
+<h2 style="margin-top:25px">EDUCATION</h2>
+<p>${v('education').replace(/\n/g,'<br>')}</p>
+
+<h2 style="margin-top:25px">PROJECTS</h2>
+<p>${v('projects').replace(/\n/g,'<br>')}</p>
+
+<h2 style="margin-top:25px">CERTIFICATIONS</h2>
+<p>${v('certifications').replace(/\n/g,'<br>')}</p>
+</div>
+</div>`;
 }
-
-function genPortfolio(){
-
-portfolioOut.textContent=`${pname.value}\n\n${pbio.value}`;
-
-}
-
-function genCover(){
-
-coverOut.textContent=`Dear Hiring Manager,\nI am applying for the ${role.value} position at ${company.value}.`;
-
-}
-
-function genInterview(){
-
-interviewOut.textContent=`1. Tell me about yourself.\n2. Why do you want this ${job.value} role?\n3. What are your strengths?`;
-
-}
-
-function toggleTheme(){
-
-document.body.style.filter=document.body.style.filter?"":"invert(1) hue-rotate(180deg)";
-
-}
-
 </script>
-
 </body>
-
 </html>
